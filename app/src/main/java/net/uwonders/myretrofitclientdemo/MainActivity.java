@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import net.uwonders.myretrofitclientdemo.retrofit.MyRetrofitClient;
-import net.uwonders.myretrofitclientdemo.retrofit.RetrofitService;
 import net.uwonders.myretrofitclientdemo.retrofit.RxSchedulers;
 
 import io.reactivex.Observer;
@@ -26,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     public void test(View view) {
       MyRetrofitClient
               .getInstance(this)
-              .createService(RetrofitService.class)
+              .createService()
               .getVerificatCode()
               .compose(RxSchedulers.<Resond>io_main())
               .subscribe(/**这个还可以进一步封装自己发挥哈*/new Observer<Resond>() {
