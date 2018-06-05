@@ -36,13 +36,44 @@ public class MyRetrofitClient {
     }
 
     /**
+     * 用于自定义url的请求
+     * @param context 上下文
+     * @param url 自定义的url
+     * @return
+     */
+    public static MyRetrofitClient getInstance(Context context, String url) {
+        if (context != null) {
+            mContext = context;
+        }
+        return new MyRetrofitClient(context, url);
+    }
+
+    /**
+     * 用于自定义url的请求和添加token的请求
+     * @param context 上下文
+     * @param url 自定义baseUrl
+     * @param headers 自定义添加的header
+     * @return
+     */
+    public static MyRetrofitClient getInstance(Context context, String url, Map<String, String> headers) {
+        if (context != null) {
+            mContext = context;
+        }
+        return new MyRetrofitClient(context, url, headers);
+    }
+
+    /**
      * 创建内部类单利
      */
     private static class SingletonHolder {
         private static MyRetrofitClient INSTANCE = new MyRetrofitClient(mContext);
     }
+
+    private MyRetrofitClient(){}
+
     /**
      * 构造函数，用于初试化
+     *
      * @param context
      */
     private MyRetrofitClient(Context context) {
@@ -59,7 +90,7 @@ public class MyRetrofitClient {
         }
         mOkHttpClient = new OkHttpClient.Builder()
                 //添加Cookie管理，不需要管理可以不加，token在Cookie中的时候需要添加
-                .cookieJar(new CookieManger(context))
+                .cookieJar(new CookieManger(context.getApplicationContext()))
                 //添加统一的请求头
                 .addInterceptor(new BaseInterceptor(headers))
                 //打印请求信息
@@ -87,7 +118,6 @@ public class MyRetrofitClient {
                 .build();
     }
 
-
     /**
      * 用于构建请求代理,BaseApiService中没有包含时可以用这个
      *
@@ -102,7 +132,10 @@ public class MyRetrofitClient {
         return retrofit.create(service);
     }
 
-
+    /**
+     * 通过代理构建接口
+     * @return
+     */
     public BaseApiService createService() {
         return retrofit.create(BaseApiService.class);
     }

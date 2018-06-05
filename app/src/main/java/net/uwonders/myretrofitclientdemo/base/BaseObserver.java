@@ -23,7 +23,8 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
 
     @Override
     public void onNext(BaseResponse<T> value) {
-        if (value.isSuccess()) {
+        onSuccess(value);
+       /* if (value.isSuccess()) {
             if (value.getData() == null) {
                 onSuccess(value.getData());
             } else {
@@ -32,7 +33,7 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
             }
         } else {
 
-        }
+        }*/
     }
 
     @Override
@@ -52,7 +53,7 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
 
     }
 
-    protected abstract void onSuccess(T t);
+    protected abstract void onSuccess(BaseResponse<T> value);
 
 //    protected abstract void onResError(BaseEntity value);
 

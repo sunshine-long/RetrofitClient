@@ -2,8 +2,10 @@ package net.uwonders.myretrofitclientdemo.retrofit;
 
 
 import net.uwonders.myretrofitclientdemo.Resond;
+import net.uwonders.myretrofitclientdemo.base.BaseResponse;
 
 import io.reactivex.Observable;
+import retrofit2.Call;
 import retrofit2.http.GET;
 
 /**
@@ -17,12 +19,24 @@ public interface BaseApiService {
 
     /**
      *(示例无参数请求)
+     * 这里采用rxjava做回调
      *获取版本号
      * @param
      * @return
      */
     @GET("/api/4/version/android/2.3.0")
-    Observable<Resond> getVerificatCode();
+    Observable<BaseResponse<Resond>> getVerisionRxjava();
+
+    /**
+     *(示例无参数请求)
+     * 这里用默认回调
+     *获取版本号
+     * @param
+     * @return
+     */
+    @GET("/api/4/version/android/2.3.0")
+    Call<BaseResponse<Resond>> getVersionDefult();
+
 
 }
 

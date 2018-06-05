@@ -5,11 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import net.uwonders.myretrofitclientdemo.base.BaseObserver;
+import net.uwonders.myretrofitclientdemo.base.BaseResponse;
 import net.uwonders.myretrofitclientdemo.retrofit.MyRetrofitClient;
 import net.uwonders.myretrofitclientdemo.retrofit.RxSchedulers;
 
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,33 +25,38 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.textView);
     }
 
-    public void test(View view) {
-      MyRetrofitClient
-              .getInstance(this)
-              .createService()
-              .getVerificatCode()
-              .compose(RxSchedulers.<Resond>io_main())
-              .subscribe(/**这个还可以进一步封装自己发挥哈*/new Observer<Resond>() {
-          @Override
-          public void onSubscribe(Disposable d) {
+    public void noParameterRxjava(View view) {
+        textView.setText("");
+        MyRetrofitClient
+                .getInstance(this)
+                .createService()
+                .getVerisionRxjava()
+                .compose(RxSchedulers.<BaseResponse<Resond>>io_main())
+                .subscribe(new BaseObserver<Resond>(MainActivity.this) {
+                    @Override
+                    protected void onSuccess(BaseResponse<Resond> value) {
+                        textView.setText(value.toString());
+                    }
+                });
+    }
 
-          }
+    public void noParameterDefult(View view) {
+        textView.setText("");
+        MyRetrofitClient.getInstance(this).createService().getVersionDefult().enqueue(new Callback<BaseResponse<Resond>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<Resond>> call, Response<BaseResponse<Resond>> response) {
+                    textView.setText(response.body().toString());
+            }
 
-          @Override
-          public void onNext(Resond stringResponse) {
-            textView.setText(stringResponse.toString());
-          }
+            @Override
+            public void onFailure(Call<BaseResponse<Resond>> call, Throwable t) {
 
-          @Override
-          public void onError(Throwable e) {
+            }
+        });
+    }
 
-          }
+    public void parameterDefult(View view) {
 
-          @Override
-          public void onComplete() {
-
-          }
-      });
 
     }
 }

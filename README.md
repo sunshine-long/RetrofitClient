@@ -1,2 +1,2 @@
 # MyRetrofitClient
-rxjava+retrofit的简单封装及demo
+rxjava+retrofit+gson的简单封装及demo

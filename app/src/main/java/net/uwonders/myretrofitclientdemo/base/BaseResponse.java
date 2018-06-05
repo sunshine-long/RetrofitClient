@@ -47,4 +47,13 @@ public class BaseResponse<E> implements Serializable {
     public void setData(E data) {
         this.response = data;
     }
+
+    @Override
+    public String toString() {
+        return "BaseResponse{" +
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                ", response=" + response +
+                '}';
+    }
 }
