@@ -8,7 +8,7 @@ import android.widget.TextView;
 import net.uwonders.myretrofitclientdemo.base.BaseObserver;
 import net.uwonders.myretrofitclientdemo.base.BaseResponse;
 import net.uwonders.myretrofitclientdemo.retrofit.MyRetrofitClient;
-import net.uwonders.myretrofitclientdemo.retrofit.RxSchedulers;
+import net.uwonders.myretrofitclientdemo.retrofit.RxHelper;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
                 .getInstance(this)
                 .createService()
                 .getVerisionRxjava()
-                .compose(RxSchedulers.<BaseResponse<Resond>>io_main())
+                .compose(RxHelper.<BaseResponse<Resond>>io_main(this))
                 .subscribe(new BaseObserver<Resond>(MainActivity.this) {
                     @Override
                     protected void onSuccess(BaseResponse<Resond> value) {
