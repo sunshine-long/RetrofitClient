@@ -19,7 +19,6 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
 
     protected BaseObserver(Context context) {
         this.mContext = context.getApplicationContext();
-
     }
 
     @Override
@@ -40,6 +39,7 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
     @Override
     public void onError(Throwable e) {
         Log.e(TAG,e.getMessage());
+        onFailure(e.getMessage());
 
     }
 
@@ -51,12 +51,13 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
     @Override
     public void onSubscribe(@NonNull Disposable d) {
         mDisposable = d;
-
+        onBefore(d);
     }
 
     protected abstract void onSuccess(BaseResponse<T> value);
 
-//    protected abstract void onResError(BaseEntity value);
+    protected abstract void onBefore(@NonNull Disposable d);
+    protected abstract void onFailure(String message);
 
 
 }

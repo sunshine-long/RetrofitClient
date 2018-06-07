@@ -14,6 +14,7 @@ import net.uwonders.myretrofitclientdemo.retrofit.RxHelper;
 
 import java.io.File;
 
+import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -32,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.textView);
     }
 
+    /**
+     * +Rxjava 后五参数的情况
+     * @param view
+     */
     public void noParameterRxjava(View view) {
         textView.setText("");
         MyRetrofitClient
@@ -44,6 +49,19 @@ public class MainActivity extends AppCompatActivity {
                     protected void onSuccess(BaseResponse<Resond> value) {
                         textView.setText(value.toString());
                     }
+
+                    @Override
+                    protected void onBefore(Disposable d) {
+                        //这里调用dispose()可以取消
+                        d.dispose();
+                    }
+
+                    @Override
+                    protected void onFailure(String d) {
+
+                    }
+
+
                 });
     }
 
@@ -74,6 +92,16 @@ public class MainActivity extends AppCompatActivity {
                     protected void onSuccess(BaseResponse<String> value) {
                         textView.setText(value.toString());
                     }
+
+                    @Override
+                    protected void onBefore(Disposable d) {
+
+                    }
+
+                    @Override
+                    protected void onFailure(String message) {
+
+                    }
                 });
     }
 
@@ -87,6 +115,16 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     protected void onSuccess(BaseResponse<Page<MobileVideoResource>> value) {
                         textView.setText(value.toString());
+                    }
+
+                    @Override
+                    protected void onBefore(Disposable d) {
+
+                    }
+
+                    @Override
+                    protected void onFailure(String message) {
+
                     }
                 });
     }
@@ -111,12 +149,23 @@ public class MainActivity extends AppCompatActivity {
                         textView.setText(value.toString());
 
                     }
+
+                    @Override
+                    protected void onBefore(Disposable d) {
+
+                    }
+
+                    @Override
+                    protected void onFailure(String message) {
+
+                    }
                 });
     }
 
 
     /**
      * 上传多张图片
+     *
      * @param view
      */
     public void multImageUpload(View view) {
@@ -147,10 +196,22 @@ public class MainActivity extends AppCompatActivity {
                     protected void onSuccess(BaseResponse<String> value) {
                         textView.setText(value.toString());
                     }
+
+                    @Override
+                    protected void onBefore(Disposable d) {
+
+                    }
+
+                    @Override
+                    protected void onFailure(String message) {
+
+                    }
                 });
     }
+
     /**
      * 图文同时上传
+     *
      * @param view
      */
     public void multImageAndTextUpload(View view) {
@@ -173,6 +234,17 @@ public class MainActivity extends AppCompatActivity {
                     protected void onSuccess(BaseResponse<String> value) {
                         textView.setText(value.toString());
                     }
+
+                    @Override
+                    protected void onBefore(Disposable d) {
+
+                    }
+
+                    @Override
+                    protected void onFailure(String message) {
+
+                    }
+
                 });
     }
 }

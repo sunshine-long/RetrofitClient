@@ -3,10 +3,12 @@ package net.uwonders.myretrofitclientdemo.retrofit;
 import android.content.Context;
 import android.text.TextUtils;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cache;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -100,6 +102,9 @@ public class MyRetrofitClient {
         if (TextUtils.isEmpty(url)) {
             url = baseUrl;
         }
+        File mFile = new File(context.getCacheDir() + "http");//储存目录
+        long maxSize = 10 * 1024 * 1024; // 10 MB 最大缓存数
+        Cache mCache = new Cache(mFile, maxSize);
         mOkHttpClient = new OkHttpClient.Builder()
                 //添加Cookie管理，不需要管理可以不加，token在Cookie中的时候需要添加
                 .cookieJar(new CookieManger(context.getApplicationContext()))
@@ -107,12 +112,16 @@ public class MyRetrofitClient {
                 .addInterceptor(new BaseInterceptor(headers))
                 //添加base改变拦截器
                 .addInterceptor(new BaseUrlInterceptor())
-                //打印请求信息
+                //添加缓存拦截器
+                .addNetworkInterceptor(new CaheInterceptor(context))
+                //打印请求信息（可以自定义打印的级别！！）
                 .addNetworkInterceptor(new HttpLoggingInterceptor(/*message -> Log.e(TAG, message)*/).setLevel(HttpLoggingInterceptor.Level.BODY))
                 //相关请求时间设置
                 .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(TIMEOUT, TimeUnit.SECONDS)
+                //添加缓存
+                .cache(mCache)
                 .connectionPool(new ConnectionPool(8, 15, TimeUnit.SECONDS))
                 // 这里你可以根据自己的机型设置同时连接的个数和时间，我这里8个，和每个保持时间为15s
                 .build();
