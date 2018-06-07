@@ -1,6 +1,7 @@
 package net.uwonders.myretrofitclientdemo.base;
 
 import android.content.Context;
+import android.util.Log;
 
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
@@ -38,7 +39,7 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
 
     @Override
     public void onError(Throwable e) {
-
+        Log.e(TAG,e.getMessage());
 
     }
 

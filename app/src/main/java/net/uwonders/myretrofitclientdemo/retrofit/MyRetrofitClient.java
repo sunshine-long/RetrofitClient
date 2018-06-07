@@ -22,7 +22,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  */
 public class MyRetrofitClient {
 
-    public static String baseUrl = BaseApiService.BASE_URL_ZHIHU;
+    public static String baseUrl = BaseApiService.BASE_URL_DAFULT;
     private static final long TIMEOUT = 10;
     private static final String TAG = "MyRetrofitClient";
     private Retrofit retrofit;

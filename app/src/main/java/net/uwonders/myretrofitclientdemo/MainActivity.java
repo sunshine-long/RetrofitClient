@@ -7,11 +7,16 @@ import android.widget.TextView;
 
 import net.uwonders.myretrofitclientdemo.base.BaseObserver;
 import net.uwonders.myretrofitclientdemo.base.BaseResponse;
+import net.uwonders.myretrofitclientdemo.bean.MobileVideoResource;
+import net.uwonders.myretrofitclientdemo.bean.Page;
 import net.uwonders.myretrofitclientdemo.retrofit.MyRetrofitClient;
 import net.uwonders.myretrofitclientdemo.retrofit.RxHelper;
 
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
+import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         MyRetrofitClient.getInstance(this).createService().getVersionDefult().enqueue(new Callback<BaseResponse<Resond>>() {
             @Override
             public void onResponse(Call<BaseResponse<Resond>> call, Response<BaseResponse<Resond>> response) {
-                    textView.setText(response.body().toString());
+                textView.setText(response.body().toString());
             }
 
             @Override
@@ -59,27 +64,115 @@ public class MainActivity extends AppCompatActivity {
 
     public void parameterDefult(View view) {
         textView.setText("");
-        MyRetrofitClient.getInstance(this).createService().getBaidu().compose(RxHelper.io_main(this)).subscribe(new Observer<String>() {
-            @Override
-            public void onSubscribe(Disposable d) {
+        MyRetrofitClient.getInstance(this)
+                .createService()
+                .getVerificatCode("18380426497")
+                .compose(RxHelper.io_main(this))
+                .subscribe(new BaseObserver<String>(this) {
 
-            }
+                    @Override
+                    protected void onSuccess(BaseResponse<String> value) {
+                        textView.setText(value.toString());
+                    }
+                });
+    }
 
-            @Override
-            public void onNext(String s) {
-                textView.setText(s);
-            }
+    public void multParameter(View view) {
+        int pageNumber = 1, pageSize = 20, userId = 10;
+        MyRetrofitClient.getInstance(this)
+                .createService()
+                .getStudentCourses(pageNumber, pageSize, userId)
+                .compose(RxHelper.io_main(this))
+                .subscribe(new BaseObserver<Page<MobileVideoResource>>(this) {
+                    @Override
+                    protected void onSuccess(BaseResponse<Page<MobileVideoResource>> value) {
+                        textView.setText(value.toString());
+                    }
+                });
+    }
 
-            @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-            }
+    /**
+     * 上传单张图片
+     *
+     * @param view
+     */
+    public void uploadImage(View view) {
+        File file = new File("/你的文件路径");
+        RequestBody mBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("file", "cover.jpg", RequestBody.create(MediaType.parse("image/*"), file))
+                .build();
+        MyRetrofitClient.getInstance(this)
+                .createService()
+                .uploadCover(mBody)
+                .compose(RxHelper.io_main(this))
+                .subscribe(new BaseObserver<String>(this) {
+                    @Override
+                    protected void onSuccess(BaseResponse<String> value) {
+                        textView.setText(value.toString());
 
-            @Override
-            public void onComplete() {
+                    }
+                });
+    }
 
-            }
-        });
 
+    /**
+     * 上传多张图片
+     * @param view
+     */
+    public void multImageUpload(View view) {
+        File file1 = new File("/你的文件路径");
+        File file2 = new File("/你的文件路径");
+        File file3 = new File("/你的文件路径");
+        File file4 = new File("/你的文件路径");
+        File file5 = new File("/你的文件路径");
+        RequestBody mBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("file1", file1.getName(), RequestBody.create(MediaType.parse("video/*"), file1))
+                .addFormDataPart("file2", file2.getName(), RequestBody.create(MediaType.parse("video/*"), file2))
+                .addFormDataPart("file3", file3.getName(), RequestBody.create(MediaType.parse("video/*"), file3))
+                .addFormDataPart("file4", file4.getName(), RequestBody.create(MediaType.parse("video/*"), file4))
+                .addFormDataPart("file5", file5.getName(), RequestBody.create(MediaType.parse("video/*"), file5))
+                .addFormDataPart("duration", 10 + "")
+                .addFormDataPart("star", String.valueOf(5))
+                .addFormDataPart("trainType", "trainType")
+                .addFormDataPart("content", "content")
+                .addFormDataPart("cover", "cover")
+                .addFormDataPart("title", "title")
+                .build();
+        MyRetrofitClient.getInstance(this)
+                .createService()
+                .uploadCourse(mBody)
+                .compose(RxHelper.io_main(this))
+                .subscribe(new BaseObserver<String>(this) {
+                    @Override
+                    protected void onSuccess(BaseResponse<String> value) {
+                        textView.setText(value.toString());
+                    }
+                });
+    }
+    /**
+     * 图文同时上传
+     * @param view
+     */
+    public void multImageAndTextUpload(View view) {
+        File file1 = new File("/你的文件路径");
+        RequestBody mBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("file1", file1.getName(), RequestBody.create(MediaType.parse("video/*"), file1))
+                .addFormDataPart("duration", 10 + "")
+                .addFormDataPart("star", String.valueOf(5))
+                .addFormDataPart("trainType", "trainType")
+                .addFormDataPart("content", "content")
+                .addFormDataPart("cover", "cover")
+                .addFormDataPart("title", "title")
+                .build();
+        MyRetrofitClient.getInstance(this)
+                .createService()
+                .uploadCourse(mBody)
+                .compose(RxHelper.io_main(this))
+                .subscribe(new BaseObserver<String>(this) {
+                    @Override
+                    protected void onSuccess(BaseResponse<String> value) {
+                        textView.setText(value.toString());
+                    }
+                });
     }
 }
