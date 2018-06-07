@@ -75,14 +75,14 @@ public interface BaseApiService {
 
     /**
      * 登录接口
-     *
+     * 请求参数可以是实体类 ！！！！
      * @param body 请求体
      * @return
      */
 
     @POST("/fitness/coach/login/login.jhtml")
     @Headers({"Content-type:application/json;charset=UTF-8"})
-    Observable<BaseResponse<Userinfo>> login(@Body RequestBody body);
+    Observable<BaseResponse<Userinfo>> login(@Body Userinfo body);
 
     /**
      * 获取我的课程列表
