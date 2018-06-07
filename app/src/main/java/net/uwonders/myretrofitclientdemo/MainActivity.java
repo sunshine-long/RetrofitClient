@@ -10,6 +10,8 @@ import net.uwonders.myretrofitclientdemo.base.BaseResponse;
 import net.uwonders.myretrofitclientdemo.retrofit.MyRetrofitClient;
 import net.uwonders.myretrofitclientdemo.retrofit.RxHelper;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,7 +58,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void parameterDefult(View view) {
+        textView.setText("");
+        MyRetrofitClient.getInstance(this).createService().getBaidu().compose(RxHelper.io_main(this)).subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
 
+            }
+
+            @Override
+            public void onNext(String s) {
+                textView.setText(s);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
 
     }
 }

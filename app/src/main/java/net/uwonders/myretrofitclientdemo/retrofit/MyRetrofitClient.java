@@ -2,8 +2,8 @@ package net.uwonders.myretrofitclientdemo.retrofit;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -13,6 +13,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * @author KangLong
@@ -21,12 +22,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class MyRetrofitClient {
 
-    public static String baseUrl = BaseApiService.BASE_URL;
+    public static String baseUrl = BaseApiService.BASE_URL_ZHIHU;
     private static final long TIMEOUT = 10;
     private static final String TAG = "MyRetrofitClient";
     private Retrofit retrofit;
     private static Context mContext;
     private OkHttpClient mOkHttpClient;
+
+    public final static Map<String, String> baseUrlMap = new HashMap<>();
+
+    static {
+        baseUrlMap.put("zhihu", BaseApiService.BASE_URL_ZHIHU);
+        baseUrlMap.put("baidu", BaseApiService.BASE_URL_BAIDU);
+    }
+
 
     public static MyRetrofitClient getInstance(Context context) {
         if (context != null) {
@@ -37,11 +46,12 @@ public class MyRetrofitClient {
 
     /**
      * 用于自定义url的请求
+     *
      * @param context 上下文
-     * @param url 自定义的url
+     * @param url     自定义的url
      * @return
      */
-    public static MyRetrofitClient getInstance(Context context, String url) {
+    private static MyRetrofitClient getInstance(Context context, String url) {
         if (context != null) {
             mContext = context;
         }
@@ -50,12 +60,13 @@ public class MyRetrofitClient {
 
     /**
      * 用于自定义url的请求和添加token的请求
+     *
      * @param context 上下文
-     * @param url 自定义baseUrl
+     * @param url     自定义baseUrl
      * @param headers 自定义添加的header
      * @return
      */
-    public static MyRetrofitClient getInstance(Context context, String url, Map<String, String> headers) {
+    private static MyRetrofitClient getInstance(Context context, String url, Map<String, String> headers) {
         if (context != null) {
             mContext = context;
         }
@@ -69,7 +80,8 @@ public class MyRetrofitClient {
         private static MyRetrofitClient INSTANCE = new MyRetrofitClient(mContext);
     }
 
-    private MyRetrofitClient(){}
+    private MyRetrofitClient() {
+    }
 
     /**
      * 构造函数，用于初试化
@@ -93,13 +105,10 @@ public class MyRetrofitClient {
                 .cookieJar(new CookieManger(context.getApplicationContext()))
                 //添加统一的请求头
                 .addInterceptor(new BaseInterceptor(headers))
+                //添加base改变拦截器
+                .addInterceptor(new BaseUrlInterceptor())
                 //打印请求信息
-                .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-                    @Override
-                    public void log(String message) {
-                        Log.d(TAG, message);
-                    }
-                }).setLevel(HttpLoggingInterceptor.Level.BASIC))
+                .addNetworkInterceptor(new HttpLoggingInterceptor(/*message -> Log.e(TAG, message)*/).setLevel(HttpLoggingInterceptor.Level.BODY))
                 //相关请求时间设置
                 .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(TIMEOUT, TimeUnit.SECONDS)
@@ -111,6 +120,8 @@ public class MyRetrofitClient {
         retrofit = new Retrofit.Builder()
                 .baseUrl(url)
                 .client(mOkHttpClient)
+                //添加转换器String
+                .addConverterFactory(ScalarsConverterFactory.create())
                 //这里是转换器  这里采用Gson做转换器
                 .addConverterFactory(GsonConverterFactory.create())
                 //添加RXjava做适配器
@@ -134,6 +145,7 @@ public class MyRetrofitClient {
 
     /**
      * 通过代理构建接口
+     *
      * @return
      */
     public BaseApiService createService() {
