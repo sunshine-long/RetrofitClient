@@ -1,7 +1,12 @@
 package net.uwonders.myretrofitclientdemo.base;
 
+import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.util.Log;
+
+import java.net.ConnectException;
+import java.net.UnknownHostException;
+import java.util.concurrent.TimeoutException;
 
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
@@ -23,24 +28,36 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
 
     @Override
     public void onNext(BaseResponse<T> value) {
-        onSuccess(value);
-       /* if (value.isSuccess()) {
-            if (value.getData() == null) {
+        if (value.isSuccess()) {
+            try {
                 onSuccess(value.getData());
-            } else {
-                T t = value.getData();
-                onSuccess(t);
+            } catch (Exception e) {
+                e.printStackTrace();
+
             }
         } else {
-
-        }*/
+            onFailure("错误信息:" + value.getMessage() + "---Code：" + value.getCode());
+        }
     }
 
     @Override
     public void onError(Throwable e) {
-        Log.e(TAG,e.getMessage());
+        Log.e(TAG, e.getMessage());
         onFailure(e.getMessage());
-
+        try {
+            if (e instanceof ConnectException
+                    || e instanceof TimeoutException
+                    || e instanceof NetworkErrorException
+                    || e instanceof UnknownHostException) {
+                onFailure(e.getMessage());
+                e.printStackTrace();
+            } else {
+                onFailure(e.getMessage());
+                e.printStackTrace();
+            }
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
     }
 
     @Override
@@ -54,9 +71,24 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
         onBefore(d);
     }
 
-    protected abstract void onSuccess(BaseResponse<T> value);
+    /**
+     * 请求成功，code == 200；
+     * @param value
+     */
+    protected abstract void onSuccess(T value);
 
+    /**
+     * 在回调之前
+     *
+     * @param d
+     */
     protected abstract void onBefore(@NonNull Disposable d);
+
+    /**
+     * 请求失败，返回错误/失败信息
+     *
+     * @param message
+     */
     protected abstract void onFailure(String message);
 
 

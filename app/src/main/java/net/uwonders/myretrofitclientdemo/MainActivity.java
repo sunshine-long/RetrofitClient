@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 .compose(RxHelper.<BaseResponse<Resond>>io_main(this))
                 .subscribe(new BaseObserver<Resond>(MainActivity.this) {
                     @Override
-                    protected void onSuccess(BaseResponse<Resond> value) {
+                    protected void onSuccess(Resond value) {
                         textView.setText(value.toString());
                     }
 
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(new BaseObserver<String>(this) {
 
                     @Override
-                    protected void onSuccess(BaseResponse<String> value) {
+                    protected void onSuccess(String value) {
                         textView.setText(value.toString());
                     }
 
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 .compose(RxHelper.io_main(this))
                 .subscribe(new BaseObserver<Page<MobileVideoResource>>(this) {
                     @Override
-                    protected void onSuccess(BaseResponse<Page<MobileVideoResource>> value) {
+                    protected void onSuccess(Page<MobileVideoResource> value) {
                         textView.setText(value.toString());
                     }
 
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 .compose(RxHelper.io_main(this))
                 .subscribe(new BaseObserver<String>(this) {
                     @Override
-                    protected void onSuccess(BaseResponse<String> value) {
+                    protected void onSuccess(String value) {
                         textView.setText(value.toString());
 
                     }
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 .compose(RxHelper.io_main(this))
                 .subscribe(new BaseObserver<String>(this) {
                     @Override
-                    protected void onSuccess(BaseResponse<String> value) {
+                    protected void onSuccess(String value) {
                         textView.setText(value.toString());
                     }
 
@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
                 .compose(RxHelper.io_main(this))
                 .subscribe(new BaseObserver<String>(this) {
                     @Override
-                    protected void onSuccess(BaseResponse<String> value) {
+                    protected void onSuccess(String value) {
                         textView.setText(value.toString());
                     }
 
