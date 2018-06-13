@@ -8,9 +8,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * BaseInterceptor
- * Created by LIUYONGKUI726 on 2016-06-30.
- * {@link # https://github.com/NeglectedByBoss/RetrofitClient}
+ * @desc BaseInterceptor 用于拦截通用的请求头信息
+ * @author Marlon
+ * @date 2018/6/13
  */
 public class BaseInterceptor implements Interceptor{
     private Map<String, String> headers;

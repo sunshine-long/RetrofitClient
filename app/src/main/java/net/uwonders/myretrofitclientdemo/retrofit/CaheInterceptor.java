@@ -13,8 +13,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * caheInterceptor
- * Created by Tamic on 2016-08-09.
+ * @desc CaheInterceptor 用于添加缓存连接器
+ * @author Marlon
+ * @date 2018/6/13
  */
 public class CaheInterceptor implements Interceptor {
 

@@ -73,6 +73,7 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
 
     /**
      * 请求成功，code == 200；
+     *
      * @param value
      */
     protected abstract void onSuccess(T value);
