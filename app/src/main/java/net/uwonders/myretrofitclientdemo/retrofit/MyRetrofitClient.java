@@ -38,7 +38,6 @@ public class MyRetrofitClient {
         baseUrlMap.put("baidu", BaseApiService.BASE_URL_BAIDU);
     }
 
-
     public static MyRetrofitClient getInstance(Context context) {
         if (context != null) {
             mContext = context;
@@ -46,13 +45,6 @@ public class MyRetrofitClient {
         return SingletonHolder.INSTANCE;
     }
 
-    /**
-     * 用于自定义url的请求
-     *
-     * @param context 上下文
-     * @param url     自定义的url
-     * @return
-     */
     private static MyRetrofitClient getInstance(Context context, String url) {
         if (context != null) {
             mContext = context;

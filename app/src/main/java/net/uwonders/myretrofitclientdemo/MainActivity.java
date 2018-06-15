@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * +Rxjava 后五参数的情况
+     *
      * @param view
      */
     public void noParameterRxjava(View view) {
@@ -67,17 +68,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void noParameterDefult(View view) {
         textView.setText("");
-        MyRetrofitClient.getInstance(this).createService().getVersionDefult().enqueue(new Callback<BaseResponse<Resond>>() {
-            @Override
-            public void onResponse(Call<BaseResponse<Resond>> call, Response<BaseResponse<Resond>> response) {
-                textView.setText(response.body().toString());
-            }
+        MyRetrofitClient.getInstance(this)
+                .createService()
+                .getVersionDefult()
+                .enqueue(new Callback<BaseResponse<Resond>>() {
+                    @Override
+                    public void onResponse(Call<BaseResponse<Resond>> call, Response<BaseResponse<Resond>> response) {
+                        textView.setText(response.body().toString());
+                    }
 
-            @Override
-            public void onFailure(Call<BaseResponse<Resond>> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<BaseResponse<Resond>> call, Throwable t) {
 
-            }
-        });
+                    }
+                });
     }
 
     public void parameterDefult(View view) {
