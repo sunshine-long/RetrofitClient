@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MyRetrofitClient.iml" filepath="$PROJECT_DIR$/MyRetrofitClient.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mvp+dagger+retrofit/mvp+dagger+retrofit.iml" filepath="$PROJECT_DIR$/mvp+dagger+retrofit/mvp+dagger+retrofit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/myretrofitclient/myretrofitclient.iml" filepath="$PROJECT_DIR$/myretrofitclient/myretrofitclient.iml" />
     </modules>
   </component>
 </project>

@@ -1,16 +1,19 @@
 package net.uwonders.myretrofitclientdemo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import net.uwonders.myretrofitclientdemo.base.BaseObserver;
-import net.uwonders.myretrofitclientdemo.base.BaseResponse;
-import net.uwonders.myretrofitclientdemo.bean.MobileVideoResource;
-import net.uwonders.myretrofitclientdemo.bean.Page;
-import net.uwonders.myretrofitclientdemo.retrofit.MyRetrofitClient;
-import net.uwonders.myretrofitclientdemo.retrofit.RxHelper;
+import com.marlon.mvpdaggerretrofit.MvpMainActivity;
+import com.marlon.myretrofitclient.base.BaseObserver;
+import com.marlon.myretrofitclient.base.BaseResponse;
+import com.marlon.myretrofitclient.bean.MobileVideoResource;
+import com.marlon.myretrofitclient.bean.Page;
+import com.marlon.myretrofitclient.bean.Resond;
+import com.marlon.myretrofitclient.retrofit.MyRetrofitClient;
+import com.marlon.myretrofitclient.retrofit.RxHelper;
 
 import java.io.File;
 
@@ -44,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
                 .getInstance(this)
                 .createService()
                 .getVerisionRxjava()
-                .compose(RxHelper.<BaseResponse<Resond>>io_main(this))
-                .subscribe(new BaseObserver<Resond>(MainActivity.this) {
+                .compose(RxHelper.io_main(this))
+                .subscribe(new BaseObserver<Resond>(this) {
                     @Override
                     protected void onSuccess(Resond value) {
                         textView.setText(value.toString());
@@ -54,12 +57,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     protected void onBefore(Disposable d) {
                         //这里调用dispose()可以取消
-                        d.dispose();
+//                        d.dispose();
                     }
 
                     @Override
                     protected void onFailure(String d) {
-
+                        textView.setText(d);
                     }
 
 
@@ -250,5 +253,9 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 });
+    }
+
+    public void gotoMVP(View view) {
+        startActivity(new Intent(this, MvpMainActivity.class));
     }
 }
