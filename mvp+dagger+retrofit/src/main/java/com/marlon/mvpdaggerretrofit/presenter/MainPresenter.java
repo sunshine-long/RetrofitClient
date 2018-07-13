@@ -20,12 +20,12 @@ import io.reactivex.disposables.Disposable;
  */
 
 public class MainPresenter extends RxPresenter<MainContract.View> implements MainContract.Presenter {
+   private BaseApiService service;
+   private Context mContext;
     @Inject
-    BaseApiService service;
-    Context mContext;
-    @Inject
-    public MainPresenter(App app) {
+    public MainPresenter(App app,BaseApiService service) {
         this.mContext = app;
+        this.service = service;
 
     }
 

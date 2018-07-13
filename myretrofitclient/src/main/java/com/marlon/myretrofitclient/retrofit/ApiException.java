@@ -1,5 +1,8 @@
 package com.marlon.myretrofitclient.retrofit;
 
+/**
+ * @author Marlon
+ */
 public class ApiException extends RuntimeException {
     public static final int USER_NOT_EXIST = 100;
     public static final int WRONG_PASSWORD = 101;
