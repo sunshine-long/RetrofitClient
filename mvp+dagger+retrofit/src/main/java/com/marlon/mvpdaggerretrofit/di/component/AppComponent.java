@@ -4,7 +4,7 @@ package com.marlon.mvpdaggerretrofit.di.component;
 import com.marlon.mvpdaggerretrofit.app.App;
 import com.marlon.mvpdaggerretrofit.di.module.AppModule;
 import com.marlon.mvpdaggerretrofit.di.module.HttpModule;
-import com.marlon.myretrofitclient.retrofit.BaseApiService;
+import com.marlon.mvpdaggerretrofit.retrofit.BaseApiService;
 
 import javax.inject.Singleton;
 

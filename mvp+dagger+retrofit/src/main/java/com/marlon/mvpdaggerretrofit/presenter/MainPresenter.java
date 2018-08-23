@@ -1,18 +1,14 @@
 package com.marlon.mvpdaggerretrofit.presenter;
 
-import android.content.Context;
-
 import com.marlon.mvpdaggerretrofit.app.App;
+import com.marlon.mvpdaggerretrofit.base.BaseObserver;
 import com.marlon.mvpdaggerretrofit.base.RxPresenter;
+import com.marlon.mvpdaggerretrofit.bean.Resond;
 import com.marlon.mvpdaggerretrofit.contract.MainContract;
-import com.marlon.myretrofitclient.base.BaseObserver;
-import com.marlon.myretrofitclient.bean.Resond;
-import com.marlon.myretrofitclient.retrofit.BaseApiService;
-import com.marlon.myretrofitclient.retrofit.RxHelper;
+import com.marlon.mvpdaggerretrofit.retrofit.BaseApiService;
+import com.marlon.mvpdaggerretrofit.retrofit.RxHelper;
 
 import javax.inject.Inject;
-
-import io.reactivex.disposables.Disposable;
 
 /**
  * @author KangLong
@@ -20,32 +16,40 @@ import io.reactivex.disposables.Disposable;
  */
 
 public class MainPresenter extends RxPresenter<MainContract.View> implements MainContract.Presenter {
-   private BaseApiService service;
-   private Context mContext;
     @Inject
-    public MainPresenter(App app,BaseApiService service) {
-        this.mContext = app;
-        this.service = service;
-
+    public MainPresenter(App app, BaseApiService service) {
+        super(app, service);
     }
 
 
     @Override
     public void getVersion() {
-        service.getVerisionRxjava().compose(RxHelper.io_main(mContext)).subscribe(new BaseObserver<Resond>(mContext) {
-            @Override
-            protected void onSuccess(Resond value) {
-                mView.showData(value.toString());
-            }
+        //使用方式一
+        addSubscribe(apiService.getVerisionRxjava()
+                .compose(RxHelper.io_main(mContext))
+                .subscribeWith(new BaseObserver<Resond>() {
+                    @Override
+                    protected void onSuccess(Resond value) {
+                        mView.showData(value.toString());
+                    }
+
+
+                    @Override
+                    protected void onFailure(String message) {
+                        mView.showData(message);
+                    }
+                }));
+        //使用方式二
+        addSubscribe(apiService.getVerisionRxjava(), new BaseObserver<Resond>() {
 
             @Override
-            protected void onBefore(Disposable d) {
+            protected void onSuccess(Resond value) {
 
             }
 
             @Override
             protected void onFailure(String message) {
-                mView.showData(message);
+
             }
         });
     }

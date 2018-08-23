@@ -1,42 +1,39 @@
-package com.marlon.myretrofitclient.base;
+package com.marlon.mvpdaggerretrofit.base;
 
 import android.accounts.NetworkErrorException;
-import android.content.Context;
 import android.util.Log;
 
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeoutException;
 
-import io.reactivex.Observer;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 
 /**
  * @author 康龙
  * @date 2017/5/10
  */
-public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
+public abstract class BaseObserver<T> extends DisposableObserver<BaseResponse<T>> {
     private static final String TAG = "BaseObserver";
-    private Context mContext;
-    private Disposable mDisposable;
-
-
-    protected BaseObserver(Context context) {
-        this.mContext = context.getApplicationContext();
-    }
 
     @Override
     public void onNext(BaseResponse<T> value) {
-        if (value.isSuccess() &&(value.getData() != null)) {
+        if (value.isSuccess() && (value.getData() != null)) {
             try {
                 onSuccess(value.getData());
             } catch (Exception e) {
                 e.printStackTrace();
-
             }
         } else {
-            onFailure("Message:" + value.getMessage() + "---Code：" + value.getCode());
+            if (value.getCode() == 401) {
+                //未登录或者登录过期进行处理
+                /*PreferencesUtils.clear();
+                App.getInstance().startActivity(new Intent(App.getInstance(), LoginActivity.class));*/
+
+            } else {
+                //返回错误信息
+                onFailure(value.getMessage());
+            }
         }
     }
 
@@ -65,25 +62,12 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
 
     }
 
-    @Override
-    public void onSubscribe(@NonNull Disposable d) {
-        mDisposable = d;
-        onBefore(d);
-    }
-
     /**
      * 请求成功，code == 200；
      *
      * @param value
      */
     protected abstract void onSuccess(T value);
-
-    /**
-     * 在回调之前
-     *
-     * @param d  返回用于全校网络请求
-     */
-    protected abstract void onBefore(@NonNull Disposable d);
 
     /**
      * 请求失败，返回错误/失败信息

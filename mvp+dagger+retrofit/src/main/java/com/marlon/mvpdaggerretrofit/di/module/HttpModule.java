@@ -4,11 +4,11 @@ package com.marlon.mvpdaggerretrofit.di.module;
 import android.util.Log;
 
 import com.marlon.mvpdaggerretrofit.app.App;
-import com.marlon.myretrofitclient.retrofit.BaseApiService;
-import com.marlon.myretrofitclient.retrofit.BaseInterceptor;
-import com.marlon.myretrofitclient.retrofit.BaseUrlInterceptor;
-import com.marlon.myretrofitclient.retrofit.CaheInterceptor;
-import com.marlon.myretrofitclient.retrofit.CookieManger;
+import com.marlon.mvpdaggerretrofit.retrofit.BaseApiService;
+import com.marlon.mvpdaggerretrofit.retrofit.BaseInterceptor;
+import com.marlon.mvpdaggerretrofit.retrofit.BaseUrlInterceptor;
+import com.marlon.mvpdaggerretrofit.retrofit.CaheInterceptor;
+import com.marlon.mvpdaggerretrofit.retrofit.CookieManger;
 
 import java.io.File;
 import java.util.HashMap;

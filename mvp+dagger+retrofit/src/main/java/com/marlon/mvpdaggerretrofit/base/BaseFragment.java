@@ -1,37 +1,49 @@
 package com.marlon.mvpdaggerretrofit.base;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.widget.Toast;
+import android.view.View;
 
-public abstract class BaseFragment extends Fragment {
-    /** 日志输出标志 **/
-    protected final String TAG = this.getClass().getSimpleName();
+import javax.inject.Inject;
 
+/**
+ * Created by codeest on 2016/8/2.
+ * MVP Fragment基类
+ */
+public abstract class BaseFragment<P extends BasePresenter> extends SimpleFragment implements BaseView {
+
+    @Inject
+    protected P mPresenter;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    public void showShortToast(String s){
-
-        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
-
-    }
-
-    public void showLongtToast(String s){
-
-        Toast.makeText(getContext(), s, Toast.LENGTH_LONG).show();
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        initInject();
+        mPresenter.attachView(this);
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
     public void onDestroyView() {
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
         super.onDestroyView();
+    }
+
+    protected abstract void initInject();
+
+
+    public void showMessage(String message) {
+        showToast(message);
+    }
+
+
+    public void gotoMain() {
 
     }
 
+    @Override
+    public void gotoLogin() {
+
+    }
 }
