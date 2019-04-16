@@ -102,11 +102,11 @@ public class MyRetrofitClient {
                 //添加Cookie管理，不需要管理可以不加，token在Cookie中的时候需要添加
                 .cookieJar(new CookieManger(context.getApplicationContext()))
                 //添加统一的请求头
-                .addInterceptor(new BaseInterceptor(headers))
+                .addInterceptor(InterceptorHelper.getHeaderInterceptor(headers))
                 //添加base改变拦截器
-                .addInterceptor(new BaseUrlInterceptor())
+                .addInterceptor(InterceptorHelper.getBaseUrlInterceptor())
                 //添加缓存拦截器
-                .addNetworkInterceptor(new CaheInterceptor(context))
+                .addNetworkInterceptor(InterceptorHelper.getCaheInterceptor(context))
                 //打印请求信息（可以自定义打印的级别！！）
                 .addNetworkInterceptor(new HttpLoggingInterceptor(message -> Log.e(TAG, message)).setLevel(HttpLoggingInterceptor.Level.BODY))
                 //相关请求时间设置

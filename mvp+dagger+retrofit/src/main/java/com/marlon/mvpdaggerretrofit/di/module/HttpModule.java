@@ -5,10 +5,8 @@ import android.util.Log;
 
 import com.marlon.mvpdaggerretrofit.app.App;
 import com.marlon.mvpdaggerretrofit.retrofit.BaseApiService;
-import com.marlon.mvpdaggerretrofit.retrofit.BaseInterceptor;
-import com.marlon.mvpdaggerretrofit.retrofit.BaseUrlInterceptor;
-import com.marlon.mvpdaggerretrofit.retrofit.CaheInterceptor;
 import com.marlon.mvpdaggerretrofit.retrofit.CookieManger;
+import com.marlon.mvpdaggerretrofit.retrofit.InterceptorHelper;
 
 import java.io.File;
 import java.util.HashMap;
@@ -29,7 +27,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
- *
  * @author Marlon
  * @date 2017/2/26
  */
@@ -64,11 +61,11 @@ public class HttpModule {
                 //添加Cookie管理，不需要管理可以不加，token在Cookie中的时候需要添加
                 .cookieJar(cookieJar)
                 //添加统一的请求头
-                .addInterceptor(new BaseInterceptor(headers))
+                .addInterceptor(InterceptorHelper.getHeaderInterceptor(headers))
                 //添加base改变拦截器
-                .addInterceptor(new BaseUrlInterceptor())
+                .addInterceptor(InterceptorHelper.getBaseUrlInterceptor())
                 //添加缓存拦截器
-                .addNetworkInterceptor(new CaheInterceptor(App.getInstance()))
+                .addNetworkInterceptor(InterceptorHelper.getCaheInterceptor(App.getInstance()))
                 //打印请求信息（可以自定义打印的级别！！）
                 .addNetworkInterceptor(new HttpLoggingInterceptor(message -> Log.e(TAG, message)).setLevel(HttpLoggingInterceptor.Level.BODY))
                 //相关请求时间设置
