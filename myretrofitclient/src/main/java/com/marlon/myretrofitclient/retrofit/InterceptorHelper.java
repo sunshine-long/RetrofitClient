@@ -2,6 +2,7 @@ package com.marlon.myretrofitclient.retrofit;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -10,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import okhttp3.CacheControl;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -168,7 +172,7 @@ public class InterceptorHelper {
                             .newBuilder()
                             .scheme(newBaseUrl.scheme())//更换网络协议
                             .host(newBaseUrl.host())//更换主机名
-                    .port(newBaseUrl.port())//更换端口
+                            .port(newBaseUrl.port())//更换端口
 //                    .removePathSegment(0)//移除第一个参数
                             .build();
                     //重建这个request，通过builder.url(newFullUrl).build()；
@@ -180,4 +184,60 @@ public class InterceptorHelper {
             }
         };
     }
+
+    /**
+     * 从返回值中获取cookie
+     * @param context
+     * @return
+     */
+    public static Interceptor saveCookieFromResponse(Context context) {
+       return new Interceptor(){
+
+           @Override
+           public Response intercept(Chain chain) throws IOException {
+               Response originalResponse = chain.proceed(chain.request());
+               //这里获取请求返回的cookie
+               if (!originalResponse.headers("Set-Cookie").isEmpty()) {
+                   final StringBuffer cookieBuffer = new StringBuffer();
+                   Observable.fromIterable(originalResponse.headers("Set-Cookie"))
+                           .map(new Function<String, String>() {
+                               @Override
+                               public String apply(String s) throws Exception {
+                                   String[] cookieArray = s.split(";");
+                                   return cookieArray[0];
+                               }
+                           }).subscribe(new Consumer<String>() {
+                       @Override
+                       public void accept(String cookie) throws Exception {
+                           cookieBuffer.append(cookie).append(";");
+                       }
+                   });
+                   SharedPreferences sharedPreferences = context.getSharedPreferences("Cookies_Prefs", Context.MODE_PRIVATE);
+                   SharedPreferences.Editor editor = sharedPreferences.edit();
+                   editor.putString("cookie", cookieBuffer.toString());
+                   editor.commit();
+               }
+               return originalResponse;
+           }
+       };
+    }
+
+ public static Interceptor addCookiesInterceptor(Context context){
+        return new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                final Request.Builder builder = chain.request().newBuilder();
+                SharedPreferences sharedPreferences = context.getSharedPreferences("Cookies_Prefs", Context.MODE_PRIVATE);
+                Observable.just(sharedPreferences.getString("cookie", ""))
+                        .subscribe(new Consumer<String>() {
+                            @Override
+                            public void accept(String cookie) throws Exception {
+                                //添加cookie
+                                builder.addHeader("Cookie", cookie);
+                            }
+                        });
+                return chain.proceed(builder.build());
+            }
+        };
+ }
 }
