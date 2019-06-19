@@ -1,4 +1,4 @@
-package com.marlon.retrofitclent;
+package com.marlon.retrofitclent.cookie;
 
 import android.content.Context;
 import android.content.SharedPreferences;

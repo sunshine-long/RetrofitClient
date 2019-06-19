@@ -5,9 +5,9 @@ import android.util.Log;
 
 import com.marlon.retrofitclentdemo.app.App;
 import com.marlon.retrofitclentdemo.http.ApiService;
-import com.marlon.retrofitclent.CookieManger;
+import com.marlon.retrofitclent.cookie.CookieManger;
 import com.marlon.retrofitclent.HttpConfig;
-import com.marlon.retrofitclent.InterceptorHelper;
+import com.marlon.retrofitclent.helper.InterceptorHelper;
 
 import java.io.File;
 import java.util.HashMap;

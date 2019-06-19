@@ -1,4 +1,4 @@
-package com.marlon.retrofitclent;
+package com.marlon.retrofitclent.exception;
 
 /**
  * @author Marlon

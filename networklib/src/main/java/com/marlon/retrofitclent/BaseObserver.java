@@ -2,6 +2,8 @@ package com.marlon.retrofitclent;
 
 import android.util.Log;
 
+import com.marlon.retrofitclent.exception.ResponeException;
+
 import io.reactivex.observers.DisposableObserver;
 import retrofit2.HttpException;
 

@@ -5,7 +5,7 @@ import android.content.Context;
 import com.marlon.retrofitclentdemo.app.App;
 import com.marlon.retrofitclentdemo.http.ApiService;
 import com.marlon.retrofitclent.BaseObserver;
-import com.marlon.retrofitclent.RxHelper;
+import com.marlon.retrofitclent.helper.RxHelper;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;

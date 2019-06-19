@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.marlon.retrofitclent.BaseObserver;
 import com.marlon.retrofitclent.BaseResponse;
 import com.marlon.retrofitclent.RetrofitClient;
-import com.marlon.retrofitclent.RxHelper;
+import com.marlon.retrofitclent.helper.RxHelper;
 import com.marlon.retrofitclentdemo.bean.MobileVideoResource;
 import com.marlon.retrofitclentdemo.bean.Page;
 import com.marlon.retrofitclentdemo.bean.Resond;

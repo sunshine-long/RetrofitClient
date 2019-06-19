@@ -4,6 +4,9 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.marlon.retrofitclent.cookie.CookieManger;
+import com.marlon.retrofitclent.helper.InterceptorHelper;
+
 import java.io.File;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -82,9 +85,11 @@ public class RetrofitClient {
     }
 
     private RetrofitClient(Context context, String url, Map<String, String> headers) {
-        if (TextUtils.isEmpty(url)) {
-            url = HttpConfig.BASE_URL_DAFULT;
-        }
+        initOkHttpClient(context, headers);
+        initRetrofit(url);
+    }
+
+    private void initOkHttpClient(Context context, Map<String, String> headers) {
         File mFile = new File(context.getCacheDir() + "http");//储存目录
         long maxSize = 10 * 1024 * 1024; // 10 MB 最大缓存数
         Cache mCache = new Cache(mFile, maxSize);
@@ -108,9 +113,14 @@ public class RetrofitClient {
                 .connectionPool(new ConnectionPool(8, 15, TimeUnit.SECONDS))
                 // 这里你可以根据自己的机型设置同时连接的个数和时间，我这里8个，和每个保持时间为15s
                 .build();
+    }
 
+    private void initRetrofit(String baseurl) {
+        if (TextUtils.isEmpty(baseurl)) {
+            baseurl = HttpConfig.BASE_URL_DAFULT;
+        }
         retrofit = new Retrofit.Builder()
-                .baseUrl(url)
+                .baseUrl(baseurl)
                 .client(mOkHttpClient)
                 //添加转换器String
                 .addConverterFactory(ScalarsConverterFactory.create())

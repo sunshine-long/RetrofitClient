@@ -1,6 +1,8 @@
-package com.marlon.retrofitclent;
+package com.marlon.retrofitclent.cookie;
 
 import android.content.Context;
+
+import com.marlon.retrofitclent.cookie.PersistentCookieStore;
 
 import java.util.List;
 

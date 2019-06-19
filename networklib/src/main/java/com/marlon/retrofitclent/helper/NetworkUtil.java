@@ -1,4 +1,4 @@
-package com.marlon.retrofitclent;
+package com.marlon.retrofitclent.helper;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

@@ -6,7 +6,7 @@ import com.marlon.retrofitclentdemo.bean.Resond;
 import com.marlon.retrofitclentdemo.contract.MainContract;
 import com.marlon.retrofitclentdemo.http.ApiService;
 import com.marlon.retrofitclent.BaseObserver;
-import com.marlon.retrofitclent.RxHelper;
+import com.marlon.retrofitclent.helper.RxHelper;
 
 import javax.inject.Inject;
 
